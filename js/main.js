@@ -29,20 +29,61 @@ class Player {
   }
 
   moveLeft() {
-    this.positionX = this.positionX - 5; //the -5 can be adjusted depending on how much % we want the player to move
+    this.positionX--; //the -5 can be adjusted depending on how much % we want the player to move
     this.domElement.style.left = this.positionX + "vw";
+    if (this.positionX >= 100) {
+      !moveLeft();
+    }
   }
 
   moveRight() {
-    this.positionX = this.positionX + 5;
+    this.positionX++;
     this.domElement.style.left = this.positionX + "vw";
+    if (this.positionX <= 0) {
+      !moveRight();
+    }
+  }
+}
+
+class Obstacle {
+  constructor() {
+    this.width = 20;
+    this.height = 10;
+    this.positionX = 50 - this.width / 2;
+    this.positionY = 100;
+
+    this.domElement = null;
+    this.createDomElement();
+  }
+
+  createDomElement() {
+    // step1: create the element:
+    this.domElement = document.createElement("div");
+
+    // step2: add content or modify (ex. innerHTML...)
+    this.domElement.className = "obstacle"; //here we change it for a class since we are gonna have multiple obstacles, id are unique always
+    this.domElement.style.width = this.width + "vw";
+    this.domElement.style.height = this.height + "vh";
+    this.domElement.style.bottom = this.positionY + "vh";
+    this.domElement.style.left = this.positionX + "vw";
+
+    //step3: append to the dom: `parentElm.appendChild()`
+    const boardElm = document.getElementById("board");
+    boardElm.appendChild(this.domElement);
+  }
+
+  moveDown() {
+    this.positionY--; // updating position
+    this.domElement.style.bottom = this.positionY + "vh"; // reflecting changes in the DOM using CSS
   }
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 const player = new Player(); // Mind the Uppercase caracter or the class created above won't work
+const obstacles = [];
 
+// responding keypad keys
 document.addEventListener("keydown", function (event) {
   if (event.key === "ArrowRight") {
     player.moveRight();
@@ -50,3 +91,36 @@ document.addEventListener("keydown", function (event) {
     player.moveLeft();
   }
 });
+
+//Create more obstacles
+setInterval(() => {
+    const newObstacle = new Obstacle();
+    obstacles.push(newObstacle);
+}, 3000);
+
+
+//Move obstacles & detect collision
+setInterval(() => {
+    obstacles.forEach( (obstacleInstance) => {
+
+        //move current obstacle
+        obstacleInstance.moveDown();
+
+        //detect if there's a collision between player and current obstacle
+        // --> player vs. obstacleInstance
+        if (
+            player.positionX < obstacleInstance.positionX + obstacleInstance.width &&
+            player.positionX + player.width > obstacleInstance.positionX &&
+            player.positionY < obstacleInstance.positionY + obstacleInstance.height &&
+            player.height + player.positionY > obstacleInstance.positionY
+        ) {
+            console.log("collision detected!!");
+
+        }
+
+
+    });
+}, 50)
+
+
+
