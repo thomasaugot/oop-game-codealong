@@ -101,26 +101,25 @@ setInterval(() => {
 
 //Move obstacles & detect collision
 setInterval(() => {
-    obstacles.forEach( (obstacleInstance) => {
+  obstacles.forEach( (obstacleInstance) => {
 
-        //move current obstacle
-        obstacleInstance.moveDown();
+      //move current obstacle
+      obstacleInstance.moveDown();
 
-        //detect if there's a collision between player and current obstacle
-        // --> player vs. obstacleInstance
-        if (
-            player.positionX < obstacleInstance.positionX + obstacleInstance.width &&
-            player.positionX + player.width > obstacleInstance.positionX &&
-            player.positionY < obstacleInstance.positionY + obstacleInstance.height &&
-            player.height + player.positionY > obstacleInstance.positionY
-        ) {
-            console.log("collision detected!!");
+      //detect if there's a collision between player and current obstacle
+      if (
+          player.positionX < obstacleInstance.positionX + obstacleInstance.width &&
+          player.positionX + player.width > obstacleInstance.positionX &&
+          player.positionY < obstacleInstance.positionY + obstacleInstance.height &&
+          player.height + player.positionY > obstacleInstance.positionY
+      ) {
+          location.href = '../game-over.html';
+      }
 
-        }
-
-
-    });
+      //check if we need to remove current obstacle
+      if(obstacleInstance.positionY <= 0 - obstacleInstance.height ){            
+          obstacleInstance.domElement.remove(); //remove dom element
+          obstacles.shift(); //remove from the array to avoid bad performances from elements accumulation in array
+      }
+  });
 }, 50)
-
-
-

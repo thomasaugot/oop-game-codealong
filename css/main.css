@@ -4,17 +4,23 @@ body {
 }
 
 #board { /* refers to the whole screen size of the game , so 100% here*/
-    background-color: rgba(168, 168, 16, 0.781);
-    height: 100vh; /* vh refers to % of the height of the screen*/
+    height: 100vh;  /* vh refers to % of the height of the screen*/
     position: relative; /* set to relative so player will behave relatively to the board and not to the screen*/
+    background-color: rgb(238, 175, 232);
+    overflow: hidden; /* to avoid the scroll bar when elements leave the screen*/
 }
 
 #player {
-    background-color: rgb(23, 22, 24);
     position: absolute; /*set to absolute so it behaves relatively to the board*/
+    background-color: rgb(255, 0, 166);
 } /* the rest of the player style properties will be put in js so it can adjust depending on collisions*/ 
 
 .obstacle {
     position: absolute;
     background-color: rgb(90, 19, 156);
+}
+
+#page-gameover {
+    text-align: center;
+    background-color: rgb(166, 161, 171);
 }
